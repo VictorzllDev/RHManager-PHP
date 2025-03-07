@@ -20,7 +20,7 @@ Cada **issue** representa uma funcionalidade importante e pode ser atribuída a 
 
 ---
 
-## **🟢 2. Criar a tabela **``** no banco de dados**
+## **🟢 2. Criar a tabela **`funcionarios`** no banco de dados**
 
 **Descrição:**\
 Essa tabela armazenará os funcionários e seus dados.
@@ -75,12 +75,12 @@ Permitir que **gestores** cadastrem, editem e removam funcionários.
 
 ---
 
-## **🟢 5. Criar a tabela **``
+## **🟢 5. Criar a tabela **
 
 **Descrição:**\
 Essa tabela armazenará os treinamentos realizados pelos funcionários.
 
-**SQL para criar a tabela **``**:**
+**SQL para criar a tabela **`treinamentos`**:**
 
 ```sql
 CREATE TABLE treinamentos (
