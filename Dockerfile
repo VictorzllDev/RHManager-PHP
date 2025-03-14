@@ -3,7 +3,7 @@ FROM php:7.4-apache
 # Instala extensões necessárias para o CodeIgniter
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Habilita o mod_rewrite do Apache
 RUN a2enmod rewrite

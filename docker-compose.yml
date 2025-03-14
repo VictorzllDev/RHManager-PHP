@@ -14,11 +14,9 @@ services:
     environment:
       - APACHE_RUN_USER=#1000
       - APACHE_RUN_GROUP=#1000
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   db:
-    image: postgres:alpine
+    image: postgres:13-alpine
     container_name: RHManager_db
     restart: unless-stopped
     environment:
