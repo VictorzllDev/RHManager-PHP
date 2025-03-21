@@ -57,9 +57,9 @@ $route['translate_uri_dashes'] = FALSE;
 $route['employees'] = 'EmployeesController/view_employees';
 
 // Auth View
-$route['sign-up'] = 'AuthController/view_register'; // Rota afins de teste, devo remover
-$route['sign-in'] = 'AuthController/view_login';
+$route['register']['get'] = 'AuthController/view_register'; // Rota afins de teste, devo remover
+$route['login']['get'] = 'AuthController/view_login';
 
-// API
-$route['register'] = 'AuthController/handle_register';
-$route['login'] = 'AuthController/handle_login';
+// Auth API
+$route['register']['post'] = 'AuthController/handle_register';
+$route['login']['post'] = 'AuthController/handle_login';
