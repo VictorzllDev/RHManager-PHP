@@ -3,12 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class EmployeesModel extends CI_Model
 {
-  public function __construct()
-  {
-    parent::__construct();
-    $this->load->database(); // Carregar o banco de dados
-  }
-
   // Get all employees
   public function getAllEmployees()
   {

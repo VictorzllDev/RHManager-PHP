@@ -52,6 +52,7 @@ class AuthController extends CI_Controller
     $this->form_validation->set_rules('email', 'E-mail', 'required|valid_email|is_unique[employees.email]');
     $this->form_validation->set_rules('phone', 'Telefone', 'min_length[10]|max_length[20]');
     $this->form_validation->set_rules('password', 'Senha', 'required|min_length[6]');
+    $this->form_validation->set_rules('role', 'tipo', 'required');
 
     // Verificando se a validação falhou
     if ($this->form_validation->run() == FALSE) {
@@ -70,7 +71,8 @@ class AuthController extends CI_Controller
       'cpf'        => $this->input->post('cpf', TRUE),
       'phone'      => $this->input->post('phone', TRUE),
       'email'      => $this->input->post('email', TRUE),
-      'password'   => password_hash($this->input->post('password', TRUE), PASSWORD_BCRYPT) // Hash da senha
+      'password'   => password_hash($this->input->post('password', TRUE), PASSWORD_BCRYPT), // Hash da senha
+      'role'      => $this->input->post('role', TRUE)
     ];
 
     // Cadastrando o funcionário
