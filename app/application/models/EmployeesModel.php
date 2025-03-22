@@ -6,6 +6,7 @@ class EmployeesModel extends CI_Model
   // Get all employees
   public function getAllEmployees()
   {
+    $this->db->select('id, name, position, department, cpf, email, phone, role');
     $query = $this->db->get('employees');
     return $query->result();
   }
