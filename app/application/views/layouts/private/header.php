@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,6 +10,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <title><?= isset($title) ? 'RH Manager | ' . $title : 'RH Manager' ?></title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
 
 <body data-bs-theme="dark" class="dark bg-gray-50 dark:bg-gray-900 dark:text-white">
@@ -24,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </svg>
           </button>
           <a href="#" class="flex ms-2 md:me-24">
-              <img src="<?= base_url('public/assets/icon.svg') ?>" class="h-8 me-3" alt="FlowBite Logo" />
+            <img src="<?= base_url('public/assets/icon.svg') ?>" class="h-8 me-3" alt="FlowBite Logo" />
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">RH Manager</span>
           </a>
         </div>
