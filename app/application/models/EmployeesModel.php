@@ -13,10 +13,24 @@ class EmployeesModel extends CI_Model
     return $query->result();
   }
 
+  // Get employee by ID
+  public function getById($id)
+  {
+    $query = $this->db->get_where($this->table, ['id' => $id]);
+    return $query->row();
+  }
+
   // Get employee by email
   public function getByEmail($email)
   {
     $query = $this->db->get_where($this->table, ['email' => $email]);
+    return $query->row();
+  }
+
+  // Get employee by CPF
+  public function getByCPF($cpf)
+  {
+    $query = $this->db->get_where($this->table, ['cpf' => $cpf]);
     return $query->row();
   }
 
@@ -29,8 +43,7 @@ class EmployeesModel extends CI_Model
   // Update employee
   public function updateEmployee($id, $data)
   {
-    $this->db->where('id', $id);
-    return $this->db->update($this->table, $data);
+    return $this->db->update($this->table, $data, ['id' => $id]);
   }
 
   // Delete employee
