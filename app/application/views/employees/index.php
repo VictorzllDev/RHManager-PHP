@@ -174,7 +174,7 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form action="/register" method="POST">
+      <form action="/employees/register" method="POST">
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div>
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
@@ -250,7 +250,7 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form action="#" method="POST">
+      <form method="POST">
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div>
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
@@ -333,7 +333,7 @@
         <button type="button" onclick="closeModal('modalDeleteEmployee')" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
           Cancelar
         </button>
-        <button type="submit" onclick="deleteEmployee(<?= $employee->id ?>)" form="formDeleteEmployee" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+        <button type="submit" id="btnDeleteEmployee" form="formDeleteEmployee" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
           Sim, tenho certeza
         </button>
       </div>
@@ -369,6 +369,10 @@
     modal.querySelector('#email').value = email
     modal.querySelector('#phone').value = phone
     modal.querySelector('#role').value = role
+
+    const modalDeleteEmployee = document.getElementById('modalDeleteEmployee')
+    modalDeleteEmployee.querySelector('#btnDeleteEmployee').setAttribute('onclick', `deleteEmployee(${employee.id})`)
+
   }
 
   // Fechar Modal

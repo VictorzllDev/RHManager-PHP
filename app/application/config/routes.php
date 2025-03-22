@@ -53,13 +53,14 @@ $route['default_controller'] = 'DashboardController/view_dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Employees View
-$route['employees'] = 'EmployeesController/view_employees';
-
 // Auth View
-$route['register']['get'] = 'AuthController/view_register'; // Rota afins de teste, devo remover
-$route['login']['get'] = 'AuthController/view_login';
+$route['login']['GET'] = 'AuthController/view_login';
 
 // Auth API
-$route['register']['post'] = 'AuthController/handle_register';
-$route['login']['post'] = 'AuthController/handle_login';
+$route['login']['POST'] = 'AuthController/handle_login';
+
+// Employees View
+$route['employees']['GET'] = 'EmployeesController/view_employees';
+$route['employees/register']['POST'] = 'EmployeesController/handle_register';
+$route['employees/edit/(:num)']['POST'] = 'EmployeesController/handle_edit/$1';
+$route['employees/delete/(:num)']['GET'] = 'EmployeesController/handle_delete/$1';
