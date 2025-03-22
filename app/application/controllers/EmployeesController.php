@@ -3,6 +3,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class EmployeesController extends CI_Controller
 {
+  public function __construct()
+  {
+    parent::__construct();
+    check_login();
+    check_role(['manager']);
+  }
+
   // Método para exibir funcionários
   public function view_employees()
   {
