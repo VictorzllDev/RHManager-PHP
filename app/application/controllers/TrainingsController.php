@@ -111,6 +111,8 @@ class TrainingsController extends CI_Controller
   // Método para lidar com edição de training
   public function handle_edit($id)
   {
+    check_role(['manager']);
+
     // Validando os dados do formulário
     if (!$this->validate_training()) {
       $this->session->set_flashdata('warning', validation_errors());
@@ -181,4 +183,29 @@ class TrainingsController extends CI_Controller
     }
     redirect('trainings');
   }
+
+  // Método para deletar funcionário
+  public function handle_delete($id)
+  {
+    check_role(['manager']);
+
+    $training = $this->TrainingsModel->getById($id);
+
+    // Verificando se o treinamento existe
+    if (!$training) {
+      $this->session->set_flashdata('warning', 'Treinamento nao encontrado.');
+      redirect('trainings');
+      return;
+    }
+
+
+    // Excluindo o Treinamento
+    if ($this->TrainingsModel->deleteTraining($id)) {
+      $this->session->set_flashdata('success', 'Treinamento excluido com sucesso!');
+    } else {
+      $this->session->set_flashdata('error', 'Erro ao excluir treinamento. Tente novamente.');
+    }
+    redirect('trainings');
+  }
+
 }

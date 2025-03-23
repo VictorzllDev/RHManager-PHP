@@ -71,3 +71,4 @@ $route['employees/delete/(:num)']['GET'] = 'EmployeesController/handle_delete/$1
 $route['trainings']['GET'] = 'TrainingsController/view_trainings';
 $route['trainings/register']['POST'] = 'TrainingsController/handle_register';
 $route['trainings/edit/(:num)']['POST'] = 'TrainingsController/handle_edit/$1';
+$route['trainings/delete/(:num)']['GET'] = 'TrainingsController/handle_delete/$1';
