@@ -77,6 +77,7 @@ class EmployeesController extends CI_Controller
       'role'       => $this->input->post('role', TRUE)
     ];
 
+
     // Cadastrando o funcionário
     if ($this->EmployeesModel->createEmployee($data)) {
       $this->session->set_flashdata('success', 'Funcionario cadastrado com sucesso!');
@@ -96,29 +97,6 @@ class EmployeesController extends CI_Controller
       return;
     }
 
-    // Verificando se o funcionário existe
-    if (!$this->EmployeesModel->getById($id)) {
-      $this->session->set_flashdata('warning', 'Funcionario nao encontrado.');
-      redirect('employees');
-      return;
-    }
-
-    // Verificando se o CPF do funcionário ja existe
-    if ($this->EmployeesModel->getByCPF($this->input->post('cpf', TRUE))->id != $id) {
-      $this->session->set_flashdata('warning', 'CPF ja cadastrado.');
-      redirect('employees');
-      return;
-    }
-
-    // Verificando se o e-mail do funcionário ja existe
-    if ($this->EmployeesModel->getByEmail($this->input->post('email', TRUE))->id != $id) {
-      $this->session->set_flashdata('warning', 'E-mail ja cadastrado.');
-      redirect('employees');
-      return;
-    }
-
-
-
     // Recuperando e limpando os dados do formulário
     $data = [
       'name'       => $this->input->post('name', TRUE),
@@ -129,6 +107,41 @@ class EmployeesController extends CI_Controller
       'email'      => $this->input->post('email', TRUE),
       'role'       => $this->input->post('role', TRUE)
     ];
+
+    // Verificando se o funcionário existe
+    if (!$this->EmployeesModel->getById($id)) {
+      $this->session->set_flashdata('warning', 'Funcionario nao encontrado.');
+      redirect('employees');
+      return;
+    }
+
+    // Verificando se o CPF do funcionário ja existe
+    $existingEmployeeByCPF = $this->EmployeesModel->getByCPF($data['cpf']);
+    if ($existingEmployeeByCPF && $existingEmployeeByCPF->id != $id) {
+      $this->session->set_flashdata('warning', 'CPF ja cadastrado.');
+      redirect('employees');
+      return;
+    }
+
+    // Verificando se o e-mail do funcionário ja existe
+    $existingEmployeeByEmail = $this->EmployeesModel->getByEmail($data['email']);
+    if ($existingEmployeeByEmail && $existingEmployeeByEmail->id != $id) {
+      $this->session->set_flashdata('warning', 'E-mail ja cadastrado.');
+      redirect('employees');
+      return;
+    }
+
+    // Verificando se o manager esta tentando se auto rebaixar
+    if (
+      $id == $this->session->userdata('userId') &&
+      $this->session->userdata('userRole') == 'manager' &&
+      $data['role'] == 'regular'
+    ) {
+      $this->session->set_flashdata('warning', 'Um manager nao pode se auto rebaixar.');
+      redirect('employees');
+      return;
+    }
+
 
     // Atualizando o funcionário
     if ($this->EmployeesModel->updateEmployee($id, $data)) {
@@ -142,13 +155,31 @@ class EmployeesController extends CI_Controller
   // Método para deletar funcionário
   public function handle_delete($id)
   {
+    $employee = $this->EmployeesModel->getById($id);
+
     // Verificando se o funcionário existe
-    if (!$this->EmployeesModel->getById($id)) {
+    if (!$employee) {
       $this->session->set_flashdata('warning', 'Funcionario nao encontrado.');
       redirect('employees');
       return;
     }
 
+    // Verificando se o funcionário logado nao pode ser excluido
+    if ($employee->id == $this->session->userdata('userId')) {
+      $this->session->set_flashdata('warning', 'Voce nao pode excluir seu proprio registro.');
+      redirect('employees');
+      return;
+    }
+
+    // verificando se e o ultimo manager
+    if ($this->EmployeesModel->getNumberOfManagers('manager') == 1) {
+      $this->session->set_flashdata('warning', 'O ultimo manager nao pode ser excluido.');
+      redirect('employees');
+      return;
+    }
+
+
+    // Excluindo o funcionário
     if ($this->EmployeesModel->deleteEmployee($id)) {
       $this->session->set_flashdata('success', 'Funcionario excluido com sucesso!');
     } else {

@@ -34,6 +34,13 @@ class EmployeesModel extends CI_Model
     return $query->row();
   }
 
+  // Get Employees by role
+  public function getNumberOfManagers($role)
+  {
+    $query = $this->db->get_where($this->table, ['role' => $role]);
+    return $query->num_rows();
+  }
+
   // Create employee
   public function createEmployee($data)
   {
