@@ -13,26 +13,33 @@ class TrainingsModel extends CI_Model
     return $query->result();
   }
 
-  // Get trainings by ID
+  // Get all trainings by employee ID
+  public function getAllTrainingsByEmployeeId($employeeId)
+  {
+    $query = $this->db->get_where($this->table, ['employee_id' => $employeeId]);
+    return $query->result();
+  }
+
+  // Get training by ID
   public function getById($id)
   {
     $query = $this->db->get_where($this->table, ['id' => $id]);
     return $query->row();
   }
 
-  // Create trainings
+  // Create training
   public function createTraining($data)
   {
     return $this->db->insert($this->table, $data);
   }
 
-  // Update trainings
+  // Update training
   public function updateTraining($id, $data)
   {
     return $this->db->update($this->table, $data, ['id' => $id]);
   }
 
-  // Delete trainings
+  // Delete training
   public function deleteTraining($id)
   {
     return $this->db->delete($this->table, ['id' => $id]);

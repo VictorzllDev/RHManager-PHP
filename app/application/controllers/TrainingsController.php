@@ -15,7 +15,13 @@ class TrainingsController extends CI_Controller
   {
     $data['title'] = 'Trainings';
     $data['employees'] = $this->EmployeesModel->getAllEmployees();
-    $data['trainings'] = $this->TrainingsModel->getAllTrainings();
+
+    if ($this->session->userdata('userRole') == 'manager') {
+      $data['trainings'] = $this->TrainingsModel->getAllTrainings();
+    } else if ($this->session->userdata('userRole') == 'regular') {
+      $data['trainings'] = $this->TrainingsModel->getAllTrainingsByEmployeeId($this->session->userdata('userId'));
+    }
+
     $data['content'] = $this->load->view('trainings/index', $data, TRUE);
     $this->load->view('layouts/private/main', $data);
   }
@@ -207,5 +213,4 @@ class TrainingsController extends CI_Controller
     }
     redirect('trainings');
   }
-
 }
