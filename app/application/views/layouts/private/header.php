@@ -12,6 +12,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </head>
 
 <body data-bs-theme="dark" class="dark bg-gray-50 dark:bg-gray-900 dark:text-white">
