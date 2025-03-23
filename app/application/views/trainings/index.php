@@ -131,6 +131,10 @@
           </thead>
           <tbody>
             <?php foreach ($trainings as $training) : ?>
+            <?php
+                $training->execution_date = date('d/m/Y', strtotime($training->execution_date));
+                $training->expiration_date = date('d/m/Y', strtotime($training->expiration_date));
+            ?>
               <tr class="border-b dark:border-gray-700">
                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   <?= $training->name ?>
@@ -142,6 +146,8 @@
                     <?php endif; ?>
                   <?php endforeach; ?>
                 </td>
+
+
                 <td class="px-4 py-3"><?= $training->execution_date ?></td>
                 <td class="px-4 py-3"><?= $training->expiration_date ?></td>
                 <td class="<?= $this->session->userdata('userRole') == 'manager' ? '' : 'hidden' ?> px-4 py-3 flex items-center justify-end">
@@ -182,13 +188,13 @@
       <form action="/trainings/register" method="POST">
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div>
-            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
-            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu nome" required="">
+            <label for="name-add" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
+            <input type="text" name="name" id="name-add" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu nome" required="">
           </div>
 
           <div>
-            <label for="employee_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Funcionário</label>
-            <select id="employee_id" name="employee_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <label for="employee_id-add" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Funcionário</label>
+            <select id="employee_id-add" name="employee_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
               <option selected="0">Seleciona o Funcionário</option>
               <?php foreach ($employees as $employee) : ?>
                 <option value="<?= $employee->id ?>"><?= $employee->name ?></option>
@@ -196,25 +202,25 @@
             </select>
           </div>
           <div>
-            <label for="execution_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Realização</label>
+            <label for="execution_date-add" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Realização</label>
             <div class="relative w-full">
               <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                 </svg>
               </div>
-              <input name="execution_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="execution_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
+              <input name="execution_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="execution_date-add" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
             </div>
           </div>
           <div>
-            <label for="date-expiration" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Expiração</label>
+            <label for="date-expiration-add" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Expiração</label>
             <div class="relative w-full">
               <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                 </svg>
               </div>
-              <input name="expiration_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="date-expiration" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
+              <input name="expiration_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="date-expiration-add" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
             </div>
           </div>
 
@@ -262,34 +268,39 @@
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
             <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu nome" required="">
           </div>
+
           <div>
-            <label for="position" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cargo</label>
-            <input type="text" name="position" id="position" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Cargo" required="">
-          </div>
-          <div>
-            <label for="department" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Departamento</label>
-            <input type="text" name="department" id="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Departamento" required="">
-          </div>
-          <div>
-            <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF</label>
-            <input type="text" name="cpf" id="cpf" class="cpf bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu CPF" required="">
-          </div>
-          <div>
-            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
-            <input type="text" name="phone" id="phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Telefone" required="">
-          </div>
-          <div>
-            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-            <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-              <option selected="">Seleciona um tipo</option>
-              <option value="regular">Regular</option>
-              <option value="manager">Manager</option>
+            <label for="employee_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Funcionário</label>
+            <select id="employee_id" name="employee_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+              <option selected="0">Seleciona o Funcionário</option>
+              <?php foreach ($employees as $employee) : ?>
+                <option value="<?= $employee->id ?>"><?= $employee->name ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Email" required="">
+            <label for="execution_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Realização</label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                </svg>
+              </div>
+              <input name="execution_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="execution_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
+            </div>
           </div>
+          <div>
+            <label for="expiration_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Expiração</label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                </svg>
+              </div>
+              <input name="expiration_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="expiration_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
+            </div>
+          </div>
+
         </div>
         <div class="flex  items-center justify-between">
           <button type="button" onclick="openModal('modalDeleteTraining')" class="text-white inline-flex items-center focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
