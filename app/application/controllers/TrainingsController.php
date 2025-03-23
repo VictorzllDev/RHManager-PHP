@@ -16,10 +16,20 @@ class TrainingsController extends CI_Controller
     $data['title'] = 'Trainings';
     $data['employees'] = $this->EmployeesModel->getAllEmployees();
 
+    // verificando se o usuario é manager ou regular para devolver um treinamento diferente
     if ($this->session->userdata('userRole') == 'manager') {
       $data['trainings'] = $this->TrainingsModel->getAllTrainings();
     } else if ($this->session->userdata('userRole') == 'regular') {
       $data['trainings'] = $this->TrainingsModel->getAllTrainingsByEmployeeId($this->session->userdata('userId'));
+    }
+
+    // verificando se existem treinamentos proximos da expiracao
+    $expiringTrainings = array_filter($data['trainings'], function ($training) {
+      return $training->expiration_date <= date('Y-m-d', strtotime('+30 days'));
+    });
+    // se existirem treinamentos proximos da expiracao, exibir um aviso
+    if (!empty($expiringTrainings)) {
+      $this->session->set_flashdata('warning', 'Treinamentos proximos do vencimento');
     }
 
     $data['content'] = $this->load->view('trainings/index', $data, TRUE);

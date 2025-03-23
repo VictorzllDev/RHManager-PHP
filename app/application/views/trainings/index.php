@@ -131,10 +131,15 @@
           </thead>
           <tbody>
             <?php foreach ($trainings as $training) : ?>
-            <?php
-                $training->execution_date = date('d/m/Y', strtotime($training->execution_date));
-                $training->expiration_date = date('d/m/Y', strtotime($training->expiration_date));
-            ?>
+              <?php
+              // verifica se o treinamento falta 30 dias para vencer
+              $isTrainingExpiringIn30Days = $training->expiration_date <= date('Y-m-d', strtotime('+30 days'));
+
+              // formata as datas
+              $training->execution_date = date('d/m/Y', strtotime($training->execution_date));
+              $training->expiration_date = date('d/m/Y', strtotime($training->expiration_date));
+
+              ?>
               <tr class="border-b dark:border-gray-700">
                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   <?= $training->name ?>
@@ -149,7 +154,7 @@
 
 
                 <td class="px-4 py-3"><?= $training->execution_date ?></td>
-                <td class="px-4 py-3"><?= $training->expiration_date ?></td>
+                <td class="<?= $isTrainingExpiringIn30Days ? 'text-red-500' : '' ?> px-4 py-3"><?= $training->expiration_date ?></td>
                 <td class="<?= $this->session->userdata('userRole') == 'manager' ? '' : 'hidden' ?> px-4 py-3 flex items-center justify-end">
                   <button id="training-options-button" onclick='openModal("modalEditTraining", <?= json_encode($training) ?>)' class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
