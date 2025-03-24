@@ -67,8 +67,8 @@
                   $this->session->flashdata('warning') ?
                   '' :
                   'hidden'
-                ?> flex items-center justify-center h-full mb-4 rounded-sm bg-gray-50 dark:bg-gray-800">
-      <div class="w-full h-full">
+                ?> flex items-center justify-center h-full mb-4 rounded-sm">
+      <div class="w-full h-full space-y-4">
         <!-- SUCCESS MESSAGE -->
         <div class="<?= $this->session->flashdata('success') ? '' : 'hidden'; ?> flex items-center p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
           <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
