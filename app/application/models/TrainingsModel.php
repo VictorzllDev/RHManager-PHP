@@ -8,7 +8,7 @@ class TrainingsModel extends CI_Model
   // Get all trainings
   public function getAllTrainings()
   {
-    $this->db->select('id, name, execution_date, expiration_date, employee_id');
+    $this->db->select('id, name, execution_date, expiration_date, training_completed, employee_id');
     $query = $this->db->get($this->table);
     return $query->result();
   }

@@ -23,13 +23,15 @@ class TrainingsController extends CI_Controller
       $data['trainings'] = $this->TrainingsModel->getAllTrainingsByEmployeeId($this->session->userdata('userId'));
     }
 
-    // verificando se existem treinamentos proximos da expiracao
+    // verificando se existem treinamentos proximos da expiracao que nao foram realizados ou vencidos
     $expiringTrainings = array_filter($data['trainings'], function ($training) {
-      return $training->expiration_date <= date('Y-m-d', strtotime('+30 days'));
+      return $training->expiration_date <= date('Y-m-d', strtotime('+30 days')) &&
+        $training->training_completed == 'f' &&
+        $training->expiration_date >= date('Y-m-d');
     });
     // se existirem treinamentos proximos da expiracao, exibir um aviso
     if (!empty($expiringTrainings)) {
-      $this->session->set_flashdata('warning', 'Treinamentos proximos do vencimento');
+      $this->session->set_flashdata('error', 'Treinamentos proximos do vencimento');
     }
 
     $data['content'] = $this->load->view('trainings/index', $data, TRUE);
@@ -46,6 +48,7 @@ class TrainingsController extends CI_Controller
     $this->form_validation->set_rules('employee_id', 'Funcionário', 'required|numeric');
     $this->form_validation->set_rules('execution_date', 'Data de Realização', 'required|min_length[10]|max_length[10]');
     $this->form_validation->set_rules('expiration_date', 'Data de Expiração', 'required|min_length[10]|max_length[10]');
+    $this->form_validation->set_rules('training_completed', 'Treinamento Realizado', 'required|in_list[t,f]');
 
     return $this->form_validation->run();
   }
@@ -68,9 +71,10 @@ class TrainingsController extends CI_Controller
       'employee_id' => $this->input->post('employee_id', TRUE),
       'execution_date' => $this->input->post('execution_date', TRUE),
       'expiration_date' => $this->input->post('expiration_date', TRUE),
+      'training_completed' => $this->input->post('training_completed', TRUE),
     ];
 
-    // Validar e converter as datas
+    // Validar e converter as datas para o formato YYYY-MM-DD
     $data['execution_date'] = validate_and_convert_date($data['execution_date']);
     $data['expiration_date'] = validate_and_convert_date($data['expiration_date']);
 
@@ -97,22 +101,18 @@ class TrainingsController extends CI_Controller
     }
 
     // verificando se a data de expiracao é menor que a data atual
-    if (strtotime($data['expiration_date']) < strtotime(date('d/m/Y'))) {
+    if (strtotime($data['expiration_date']) < strtotime(date('Y-m-d'))) {
       $this->session->set_flashdata('warning', 'Data de Expiração não pode ser menor que a Data Atual');
       redirect('trainings');
       return;
     }
 
     // verificando se a data de realizacao e menor que a data atual
-    if (strtotime($data['execution_date']) < strtotime(date('d/m/Y'))) {
+    if (strtotime($data['execution_date']) < strtotime(date('Y-m-d'))) {
       $this->session->set_flashdata('warning', 'Data de Realização não pode ser menor que a Data Atual');
       redirect('trainings');
       return;
     }
-
-    // convertendo as datas dd/mm/yyyy para yyyy/mm/dd
-    $data['execution_date'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['execution_date'])));
-    $data['expiration_date'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['expiration_date'])));
 
 
     // Criando o trainings
@@ -142,9 +142,10 @@ class TrainingsController extends CI_Controller
       'employee_id' => $this->input->post('employee_id', TRUE),
       'execution_date' => $this->input->post('execution_date', TRUE),
       'expiration_date' => $this->input->post('expiration_date', TRUE),
+      'training_completed' => $this->input->post('training_completed', TRUE),
     ];
 
-    // Validar e converter as datas
+    // Validar e converter as datas para o formato YYYY-MM-DD
     $data['execution_date'] = validate_and_convert_date($data['execution_date']);
     $data['expiration_date'] = validate_and_convert_date($data['expiration_date']);
 
@@ -177,14 +178,14 @@ class TrainingsController extends CI_Controller
     }
 
     // verificando se a data de realizacao e menor que a data atual
-    if (strtotime($data['execution_date']) < strtotime(date('d/m/Y'))) {
+    if (strtotime($data['execution_date']) < strtotime(date('Y-m-d'))) {
       $this->session->set_flashdata('warning', 'Data de Realização não pode ser menor que a Data Atual');
       redirect('trainings');
       return;
     }
 
     // verificando se a data de expiracao é menor que a data atual
-    if (strtotime($data['expiration_date']) < strtotime(date('d/m/Y'))) {
+    if (strtotime($data['expiration_date']) < strtotime(date('Y-m-d'))) {
       $this->session->set_flashdata('warning', 'Data de Expiração não pode ser menor que a Data Atual');
       redirect('trainings');
       return;

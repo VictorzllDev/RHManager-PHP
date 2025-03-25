@@ -137,6 +137,7 @@
                   <th scope="col" class="px-4 py-3">Funcionário</th>
                   <th scope="col" class="px-4 py-3">Data de Realização</th>
                   <th scope="col" class="px-4 py-3">Data de Expiração</th>
+                  <th scope="col" class="px-4 py-3">Status</th>
                   <th scope="col" class="<?= $this->session->userdata('userRole') == 'manager' ? '' : 'hidden' ?> px-4 py-3">
                     <span class="sr-only">Actions</span>
                   </th>
@@ -145,8 +146,11 @@
               <tbody>
                 <?php foreach ($trainings as $training) : ?>
                   <?php
-                  // verifica se o treinamento falta 30 dias para vencer
-                  $isTrainingExpiringIn30Days = $training->expiration_date <= date('Y-m-d', strtotime('+30 days'));
+                  // verifica se o treinamento falta 30 dias para vencer e não foi realizado
+                  $isTrainingExpiringIn30Days = $training->expiration_date <= date('Y-m-d', strtotime('+30 days')) && $training->training_completed == 'f';
+
+                  // verifica se o treinamento já expirou
+                  $isTrainingExpired = $training->expiration_date < date('Y-m-d');
 
                   // formata as datas
                   $training->execution_date = date('d/m/Y', strtotime($training->execution_date));
@@ -167,7 +171,23 @@
 
 
                     <td class="px-4 py-3"><?= $training->execution_date ?></td>
-                    <td class="<?= $isTrainingExpiringIn30Days ? 'text-red-500' : '' ?> px-4 py-3"><?= $training->expiration_date ?></td>
+                    <td class="<?= $isTrainingExpiringIn30Days && !$isTrainingExpired ? 'text-red-500' : '' ?> px-4 py-3"><?= $training->expiration_date ?></td>
+
+                    <td class="px-4 py-3">
+                      <?php
+                      $statusMap = [
+                        't' => ['Realizado', 'bg-green-500'],
+                        'f' => [$isTrainingExpired ? 'Expirado' : 'Pendente', $isTrainingExpired ? 'bg-red-500' : 'bg-yellow-500']
+                      ];
+
+                      [$trainingStatus, $trainingStatusClass] = $statusMap[$training->training_completed] ?? ['Pendente', 'bg-yellow-500'];
+                      ?>
+                      <div class="flex items-center">
+                        <span class="<?= $trainingStatusClass ?> h-2.5 w-2.5 rounded-full mr-2"></span>
+                        <p><?= $trainingStatus ?></p>
+                      </div>
+                    </td>
+
                     <td class="<?= $this->session->userdata('userRole') == 'manager' ? '' : 'hidden' ?> px-4 py-3 flex items-center justify-end">
                       <button id="training-options-button" onclick='openModal("modalEditTraining", <?= json_encode($training) ?>)' class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -245,6 +265,14 @@
               </div>
             </div>
 
+            <div>
+              <label for="training_completed-add" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Treinamento Realizado</label>
+              <select id="training_completed-add" name="training_completed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                <option selected="" value="f">Não Realizado</option>
+                <option value="t">Realizado</option>
+              </select>
+            </div>
+
           </div>
           <div class="flex justify-end items-center space-x-2">
             <button type="button" onclick="closeModal('modalAddTraining')" class="text-white inline-flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
@@ -320,6 +348,14 @@
                 </div>
                 <input name="expiration_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="today" datepicker-orientation="" id="expiration_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
               </div>
+            </div>
+
+            <div>
+              <label for="training_completed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Treinamento Realizado</label>
+              <select id="training_completed" name="training_completed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                <option selected="" value="f">Não Realizado</option>
+                <option value="t">Realizado</option>
+              </select>
             </div>
 
           </div>
@@ -402,6 +438,7 @@
       modal.querySelector('#employee_id').value = employee_id
       modal.querySelector('#execution_date').value = execution_date
       modal.querySelector('#expiration_date').value = expiration_date
+      modal.querySelector('#training_completed').value = training.training_completed
 
       const modalDeleteTraining = document.getElementById('modalDeleteTraining')
       modalDeleteTraining.querySelector('#btnDeleteTraining').setAttribute('onclick', `deleteTraining(${id})`)
