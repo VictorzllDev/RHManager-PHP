@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class DashboardController extends CI_Controller {
+class DashboardController extends CI_Controller
+{
   public function __construct()
   {
     parent::__construct();
@@ -9,10 +10,13 @@ class DashboardController extends CI_Controller {
     check_role(['regular', 'manager']);
   }
 
-	public function view_dashboard()
-	{
+  public function view_dashboard()
+  {
     $data['title'] = 'Dashboard';
-    $data['content'] = $this->load->view('dashboard/index', [], TRUE);
-		$this->load->view('layouts/private/main', $data);
-	}
+    $data['employees'] = $this->EmployeesModel->getAllEmployees();
+    $data['trainings'] = $this->TrainingsModel->getAllTrainings();
+    $data['content'] = $this->load->view('dashboard/index', $data, TRUE);
+
+    $this->load->view('layouts/private/main', $data);
+  }
 }
