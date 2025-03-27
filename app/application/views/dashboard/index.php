@@ -114,42 +114,46 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b dark:border-gray-700">
-                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">treinamento Vencido</th>
-                <td class="px-4 py-3">Vitor Lopes</td>
-                <td class="px-4 py-3">03/02/2025</td>
-                <td class="px-4 py-3">05/02/2025</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center">
-                    <span class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></span>
-                    <p class="">Vencido</p>
-                  </div>
-                </td>
-              </tr>
-              <tr class="border-b dark:border-gray-700">
-                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">treinamento Pendente</th>
-                <td class="px-4 py-3">Cleiton Silva</td>
-                <td class="px-4 py-3">26/03/2025</td>
-                <td class="px-4 py-3">28/03/2025</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center">
-                    <span class="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></span>
-                    <p class="">Pendente</p>
-                  </div>
-                </td>
-              </tr>
-              <tr class="border-b dark:border-gray-700">
-                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">treinamento Realizado</th>
-                <td class="px-4 py-3">Jean Silva</td>
-                <td class="px-4 py-3">21/03/2025</td>
-                <td class="px-4 py-3">24/03/2025</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center">
-                    <span class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></span>
-                    <p class="">Realizado</p>
-                  </div>
-                </td>
-              </tr>
+              <?php foreach ($trainings as $training) : ?>
+                <?php
+                // verifica se o treinamento falta 30 dias para vencer e não foi realizado
+                $isTrainingExpiringIn30Days = $training->expiration_date <= date('Y-m-d', strtotime('+30 days')) && $training->training_completed == 'f';
+
+                // verifica se o treinamento já expirou
+                $isTrainingExpired = $training->expiration_date < date('Y-m-d');
+
+              // verificando se o treinamento e diferente que pendente para não mostrar na tabela
+                if ($training->training_completed == 't' || $isTrainingExpired) {
+                  continue;
+                }
+
+                // formata as datas
+                $training->execution_date = date('d/m/Y', strtotime($training->execution_date));
+                $training->expiration_date = date('d/m/Y', strtotime($training->expiration_date));
+
+                ?>
+
+                <tr class="border-b dark:border-gray-700">
+                  <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">treinamento Vencido</th>
+                  <td class="px-4 py-3"><?= $training->name ?></td>
+                  <td class="px-4 py-3"><?= $training->execution_date ?></td>
+                  <td class="px-4 py-3"><?= $training->expiration_date ?></td>
+                  <td class="px-4 py-3">
+                    <?php
+                    $statusMap = [
+                      't' => ['Realizado', 'bg-green-500'],
+                      'f' => [$isTrainingExpired ? 'Expirado' : 'Pendente', $isTrainingExpired ? 'bg-red-500' : 'bg-yellow-500']
+                    ];
+
+                    [$trainingStatus, $trainingStatusClass] = $statusMap[$training->training_completed] ?? ['Pendente', 'bg-yellow-500'];
+                    ?>
+                    <div class="flex items-center">
+                      <span class="<?= $trainingStatusClass ?> h-2.5 w-2.5 rounded-full mr-2"></span>
+                      <p><?= $trainingStatus ?></p>
+                    </div>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
 
             </tbody>
           </table>
