@@ -171,13 +171,6 @@ class EmployeesController extends CI_Controller
       return;
     }
 
-    // verificando se e o ultimo manager
-    if ($this->EmployeesModel->getNumberOfManagers('manager') == 1) {
-      $this->session->set_flashdata('warning', 'O ultimo manager nao pode ser excluido.');
-      redirect('employees');
-      return;
-    }
-
 
     // Excluindo o funcionário
     if ($this->EmployeesModel->deleteEmployee($id)) {

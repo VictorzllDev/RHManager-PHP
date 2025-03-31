@@ -239,13 +239,12 @@
           </div>
           <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
-            <input type="text" name="phone" id="phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Telefone" required="">
+            <input type="text" name="phone" id="phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Telefone">
           </div>
           <div>
-            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
             <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-              <option selected="">Seleciona um tipo</option>
-              <option value="regular">Regular</option>
+              <option selected="" value="regular">Regular</option>
               <option value="manager">Manager</option>
             </select>
           </div>
@@ -255,7 +254,7 @@
           </div>
           <div>
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
-            <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="********" required="">
+            <input type="password" name="password" id="password" minlength="6" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="********" required="">
           </div>
         </div>
         <div class="flex justify-end items-center space-x-2">
@@ -315,12 +314,11 @@
           </div>
           <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
-            <input type="text" name="phone" id="phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Telefone" required="">
+            <input type="text" name="phone" id="phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Digita seu Telefone">
           </div>
           <div>
-            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
             <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-              <option selected="">Seleciona um tipo</option>
               <option value="regular">Regular</option>
               <option value="manager">Manager</option>
             </select>
